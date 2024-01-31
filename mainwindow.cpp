@@ -11,6 +11,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+const QString SERVERADDRESS = "47.109.145.252";
+const int SERVERPORT = 1234;
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -135,7 +138,7 @@ void MainWindow::on_btnConnect_clicked()
         return;
     }
 
-    Client::instance()->connectToServer(QHostAddress(ui->editAddress->text()), ui->editPort->text().toInt());
+    Client::instance()->connectToServer(QHostAddress(SERVERADDRESS), SERVERPORT);
 }
 
 //发送数据
@@ -147,12 +150,24 @@ void MainWindow::on_pushButton_2_clicked()
 //登录
 void MainWindow::on_btnLogIn_clicked()
 {
+    if(ui->editUserName->text().isEmpty() || ui->editUserPassword->text().isEmpty())
+    {
+        QMessageBox::information(nullptr, "注册失败", "账号或密码不能为空", QMessageBox::Ok);
+        return;
+    }
+
     Client::instance()->sendLoginRequest(ui->editUserName->text(), ui->editUserPassword->text());
 }
 
 //注册账号
 void MainWindow::on_btnSignUp_clicked()
 {
+    if(ui->editUserName->text().isEmpty() || ui->editUserPassword->text().isEmpty())
+    {
+        QMessageBox::information(nullptr, "注册失败", "账号或密码不能为空", QMessageBox::Ok);
+        return;
+    }
+
     Client::instance()->sendSignUpRequest(ui->editUserName->text(), ui->editUserPassword->text());
 }
 
