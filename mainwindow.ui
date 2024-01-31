@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>891</width>
+    <height>706</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>891</width>
+      <height>706</height>
+     </rect>
+    </property>
+    <property name="lineWidth">
+     <number>0</number>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="page">
+     <widget class="QPushButton" name="btnLogIn">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>360</y>
+        <width>80</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>登录</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>290</y>
+        <width>31</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>密码</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="editUserName">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>242</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="editUserPassword">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>292</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnSignUp">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>360</y>
+        <width>80</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>注册账号</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnExit">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>360</y>
+        <width>80</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>退出</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>240</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>用户名</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnConnect">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>110</y>
+        <width>91</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>连接服务端</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>50</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>主机号：</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>50</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>端口号：</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="editPort">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>50</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>1234</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labConnect">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>110</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>未连接</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="editAddress">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>50</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>10.5.10.121</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_2">
+     <widget class="QTextEdit" name="editReceivedMessage">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>130</y>
+        <width>641</width>
+        <height>391</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="editMessage">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>570</y>
+        <width>341</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>570</y>
+        <width>91</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>发送</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
