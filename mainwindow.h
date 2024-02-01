@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QMessageBox>
 
 
 QT_BEGIN_NAMESPACE
@@ -19,13 +19,14 @@ public:
     ~MainWindow();
     void init();
     void initConnect();
+    void connectToServer();
 
 private slots:
     void onConnectSucceed(bool);
     void onHandleReceivedMessage(QString data);
     void onHandleLoginResult(int code);
     void onHandleSingUpResult(int code);
-    void on_btnConnect_clicked();
+    void onUpdateOnlineUsers(QStringList usernameList);
 
     void on_pushButton_2_clicked();
 
