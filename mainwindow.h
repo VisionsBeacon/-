@@ -36,6 +36,9 @@ private slots:
 
     void on_btnExit_clicked();
 
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
 private:
     Ui::MainWindow *ui;
     bool m_isConnect = false;

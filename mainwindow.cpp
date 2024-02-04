@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QKeyEvent>
 
 const QString SERVERADDRESS = "10.5.10.121";
 const int SERVERPORT = 1234;
@@ -218,5 +219,24 @@ void MainWindow::on_btnSignUp_clicked()
 void MainWindow::on_btnExit_clicked()
 {
     close();
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter))
+    {
+        if(ui->stackedWidget->currentIndex() == 0)
+        {
+            on_btnLogIn_clicked();
+        }
+        else if(ui->stackedWidget->currentIndex() == 1)
+        {
+            on_pushButton_2_clicked();
+        }
+    }
+    else
+    {
+        QWidget::keyPressEvent(event);
+    }
 }
 
