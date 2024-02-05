@@ -14,7 +14,7 @@ public:
 signals:
     void connectSucceed(bool);
     void handleReceivedMessage(QString);
-    void handleLoginResult(int);
+    void handleLoginResult(int, QString);
     void handleSingUpResult(int);
     void updateOnlineUsers(QStringList);
 

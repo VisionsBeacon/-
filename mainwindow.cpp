@@ -12,7 +12,7 @@
 #include <QJsonObject>
 #include <QKeyEvent>
 
-const QString SERVERADDRESS = "10.5.10.121";
+const QString SERVERADDRESS = "47.109.145.252";
 const int SERVERPORT = 1234;
 
 
@@ -81,15 +81,26 @@ void MainWindow::onHandleReceivedMessage(QString data)
 
     QString username = messages["username"].toString();
     QString chatMessage = messages["chat"].toString();
+    QString timestamp = messages["date"].toString();
 
-    QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    //使用富文本格式化消息
+    QString formattedMessage;
+    if (m_currentUser == username)
+    {
+        //对于当前用户，消息显示在右侧
+        formattedMessage = QString("<div style='text-align: right;'>[%1] <b>%2</b>: %3</div>").arg(timestamp, username, chatMessage);
+    }
+    else
+    {
+        //对于其他用户，消息显示在左侧
+        formattedMessage = QString("<div>[%1] <b>%2</b>: %3</div>").arg(timestamp, username, chatMessage);
+    }
 
-    QString formattedMessage = QString("[%1] %2: %3").arg(timestamp, username, chatMessage);
     ui->editReceivedMessage->append(formattedMessage);
 }
 
 //登录返回
-void MainWindow::onHandleLoginResult(int code)
+void MainWindow::onHandleLoginResult(int code, QString userName)
 {
     switch (code)
     {
@@ -97,6 +108,7 @@ void MainWindow::onHandleLoginResult(int code)
         {
             QMessageBox::information(nullptr, "登录成功", "欢迎您！", QMessageBox::Ok);
             ui->stackedWidget->setCurrentIndex(1);
+            m_currentUser = userName;
             break;
         }
         case Error_Password:
@@ -194,6 +206,11 @@ void MainWindow::on_pushButton_2_clicked()
 //登录
 void MainWindow::on_btnLogIn_clicked()
 {
+    if(m_currentUser.isEmpty())
+    {
+        m_currentUser.clear();
+    }
+
     if(ui->editUserName->text().isEmpty() || ui->editUserPassword->text().isEmpty())
     {
         QMessageBox::information(nullptr, "注册失败", "账号或密码不能为空", QMessageBox::Ok);

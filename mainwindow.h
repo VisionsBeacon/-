@@ -24,7 +24,7 @@ public:
 private slots:
     void onConnectSucceed(bool);
     void onHandleReceivedMessage(QString data);
-    void onHandleLoginResult(int code);
+    void onHandleLoginResult(int code, QString userName);
     void onHandleSingUpResult(int code);
     void onUpdateOnlineUsers(QStringList usernameList);
 
@@ -42,6 +42,7 @@ protected:
 private:
     Ui::MainWindow *ui;
     bool m_isConnect = false;
+    QString m_currentUser;
 };
 
 #endif // MAINWINDOW_H

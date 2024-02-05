@@ -165,38 +165,38 @@ void Client::processMessage(QByteArray data)
 
     switch (messageType)
     {
-    case LoginResult:
-    {
-        int code = messagesObj["code"].toInt();
-        Q_EMIT hApp->m_sigmanager->handleLoginResult(code);
-        break;
-    }
-    case SignupResult:
-    {
-        int code = messagesObj["code"].toInt();
-        Q_EMIT hApp->m_sigmanager->handleSingUpResult(code);
-        break;
-    }
-    case Normal:
-    {
-        QString message = QString::fromUtf8(data);
-        Q_EMIT hApp->m_sigmanager->handleReceivedMessage(message);
-        break;
-    }
-    case OnlineUsers:
-    {
-        QJsonArray usernames = messagesObj["usernames"].toArray();
-        QStringList usernameList;
-        for (const QJsonValue &val : usernames)
+        case LoginResult:
         {
-            usernameList.append(val.toString());
+            int code = messagesObj["code"].toInt();
+            QString userName = messagesObj["username"].toString();
+            Q_EMIT hApp->m_sigmanager->handleLoginResult(code, userName);
+            break;
         }
+        case SignupResult:
+        {
+            int code = messagesObj["code"].toInt();
+            Q_EMIT hApp->m_sigmanager->handleSingUpResult(code);
+            break;
+        }
+        case Normal:
+        {
+            QString message = QString::fromUtf8(data);
+            Q_EMIT hApp->m_sigmanager->handleReceivedMessage(message);
+            break;
+        }
+        case OnlineUsers:
+        {
+            QJsonArray usernames = messagesObj["usernames"].toArray();
+            QStringList usernameList;
+            for (const QJsonValue &val : usernames)
+            {
+                usernameList.append(val.toString());
+            }
 
-        Q_EMIT hApp->m_sigmanager->updateOnlineUsers(usernameList);
-    }
-
-    default:
-        break;
+            Q_EMIT hApp->m_sigmanager->updateOnlineUsers(usernameList);
+        }
+        default:
+            break;
     }
 }
 
