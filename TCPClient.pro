@@ -12,8 +12,10 @@ LIBS += -lws2_32
 
 
 INCLUDEPATH += controller
+INCLUDEPATH += customcontrols
 
 include(controller/controller.pri)
+include(customcontrols/customcontrols.pri)
 
 SOURCES += \
     application.cpp \
@@ -31,3 +33,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    res.qrc

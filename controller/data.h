@@ -1,6 +1,8 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include <QString>
+
 enum LoginResultType
 {
     Login_Successed,    //登录成功
@@ -20,6 +22,14 @@ enum MessageType
     LoginResult,
     SignupResult,
     OnlineUsers     //在线人数
+};
+
+//接收服务器转发的正常聊天内容
+struct ChatMessage
+{
+    QString username;
+    QString chatMessage;
+    QString timestamp;
 };
 
 #endif // DATA_H

@@ -1,8 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+#include "data.h"
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QListWidgetItem>
 
 
 QT_BEGIN_NAMESPACE
@@ -20,6 +22,9 @@ public:
     void init();
     void initConnect();
     void connectToServer();
+    void dealMessageTime(const QString &curMsgTime);
+    void dealMessage(const ChatMessage &chatMessage);
+    bool isIntervalMoreThanThreeMinutes(const QString &lastTime, const QString &curMsgTime);
 
 private slots:
     void onConnectSucceed(bool);

@@ -3,6 +3,7 @@
 #include "client.h"
 #include "application.h"
 #include "data.h"
+#include "customcontrols/qnchatmessage.h"
 
 #include <QDebug>
 #include <QHostAddress>
@@ -11,8 +12,10 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QKeyEvent>
+#include <QListWidgetItem>
 
-const QString SERVERADDRESS = "47.109.145.252";
+
+const QString SERVERADDRESS = "10.5.10.121";
 const int SERVERPORT = 1234;
 
 
@@ -57,6 +60,86 @@ void MainWindow::connectToServer()
     Client::instance()->connectToServer(QHostAddress(SERVERADDRESS), SERVERPORT);
 }
 
+void MainWindow::dealMessageTime(const QString &curMsgTime)
+{
+    bool isShowTime = false;
+
+    //获取上一条消息的时间，如果两条消息时间差大于一分钟，则显示时间
+    if(ui->listWidget->count() > 0)
+    {
+        //获取上一条消息的时间
+        QListWidgetItem* lastItem = ui->listWidget->item(ui->listWidget->count() - 1);
+        QNChatMessage* messageW = (QNChatMessage*)ui->listWidget->itemWidget(lastItem);
+
+        isShowTime = isIntervalMoreThanThreeMinutes(messageW->time(), curMsgTime);
+    }
+    else
+    {
+        isShowTime = true;
+    }
+
+    if(isShowTime)
+    {
+        QNChatMessage* messageTime = new QNChatMessage(ui->listWidget->parentWidget());
+        QListWidgetItem* itemTime = new QListWidgetItem(ui->listWidget);
+
+        QSize size = QSize(ui->listWidget->width() - 50, 40);
+        messageTime->resize(size);
+        itemTime->setSizeHint(size);
+        messageTime->setText(curMsgTime, curMsgTime, size, QNChatMessage::User_Time);
+        ui->listWidget->setItemWidget(itemTime, messageTime);
+    }
+}
+
+void MainWindow::dealMessage(const ChatMessage &chatMessage)
+{
+    QNChatMessage* messageW = new QNChatMessage(ui->listWidget->parentWidget());
+    QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+
+    messageW->setFixedWidth(ui->listWidget->width() - 20);
+
+    //先计算文本长度
+    QSize size = messageW->fontRect(chatMessage.chatMessage, chatMessage.username);
+    item->setSizeHint(size);
+
+    QNChatMessage::User_Type userType = QNChatMessage::User_Unknow;
+
+    if(chatMessage.username == m_currentUser)
+    {
+        userType = QNChatMessage::User_Me;
+    }
+    else
+    {
+        userType = QNChatMessage::User_OtherPerson;
+    }
+
+    messageW->setText(chatMessage.chatMessage, chatMessage.timestamp, size, userType);
+    ui->listWidget->setItemWidget(item, messageW);
+}
+
+bool MainWindow::isIntervalMoreThanThreeMinutes(const QString &lastTime, const QString &curMsgTime)
+{
+    // 定义时间格式
+    QString format = "yyyy-MM-dd HH:mm:ss";
+
+    // 将 QString 转换为 QDateTime
+    QDateTime curDateTime = QDateTime::fromString(curMsgTime, format);
+    QDateTime lastDateTime = QDateTime::fromString(lastTime, format);
+
+    // 检查时间是否有效
+    if (!curDateTime.isValid() || !lastDateTime.isValid())
+    {
+        qWarning() << "无效的时间格式。请使用格式：" << format;
+        return false;
+    }
+
+    // 计算时间差（以秒为单位）
+    qint64 secondsDiff = qAbs(curDateTime.secsTo(lastDateTime));
+
+    // 检查是否超过3分钟（180秒）
+    return secondsDiff > 180;
+}
+
 void MainWindow::onConnectSucceed(bool isConnected)
 {
     if(isConnected)
@@ -74,29 +157,35 @@ void MainWindow::onConnectSucceed(bool isConnected)
 //打印在聊天框
 void MainWindow::onHandleReceivedMessage(QString data)
 {
+    ChatMessage chatMessage;
+
     QJsonDocument doc = QJsonDocument::fromJson(data.toUtf8());
     QJsonObject messageObject = doc.object();
 
     QJsonObject messages = messageObject["messages"].toObject();
 
-    QString username = messages["username"].toString();
-    QString chatMessage = messages["chat"].toString();
-    QString timestamp = messages["date"].toString();
-
-    //使用富文本格式化消息
-    QString formattedMessage;
-    if (m_currentUser == username)
+    if(messages.contains("username"))
     {
-        //对于当前用户，消息显示在右侧
-        formattedMessage = QString("<div style='text-align: right;'>[%1] <b>%2</b>: %3</div>").arg(timestamp, username, chatMessage);
+        chatMessage.username = messages["username"].toString();
     }
-    else
+    if(messages.contains("chat"))
     {
-        //对于其他用户，消息显示在左侧
-        formattedMessage = QString("<div>[%1] <b>%2</b>: %3</div>").arg(timestamp, username, chatMessage);
+        chatMessage.chatMessage = messages["chat"].toString();
+    }
+    if(messages.contains("date"))
+    {
+        chatMessage.timestamp = messages["date"].toString();
     }
 
-    ui->editReceivedMessage->append(formattedMessage);
+
+    //处理发送时间
+    dealMessageTime(chatMessage.timestamp);
+
+    //处理发送消息
+    dealMessage(chatMessage);
+
+    ui->listWidget->setCurrentRow(ui->listWidget->count() - 1);
+
 }
 
 //登录返回
